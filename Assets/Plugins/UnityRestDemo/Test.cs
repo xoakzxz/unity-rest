@@ -43,6 +43,12 @@ public class Test : MonoBehaviour
 
 	private void Post ()
 	{
-		//Post post = new Post ("1", "Hello", "world");
+		Post post = new Post ("1", "Hello", "world");
+		api.Post<Post> ().WithBody (post).OnResult (LogOk).Send ();
+	}
+
+	private void LogOk ()
+	{
+		Debug.Log ("Ok");
 	}
 }

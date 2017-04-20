@@ -5,10 +5,21 @@ namespace UnityRest
 {
     public static class JsonHelper
     {
-        public static T[] FromJson<T>(string json)
+        public static T[] FromJson<T>(string jsonArray)
         {
-            Wrapper<T> wrapper = JsonUtility.FromJson<Wrapper<T>>(json);
+            jsonArray = WrapArray (jsonArray);
+            return FromJsonWrapped<T> (jsonArray);
+        }
+
+        public static T[] FromJsonWrapped<T> (string jsonObject)
+        {
+            Wrapper<T> wrapper = JsonUtility.FromJson<Wrapper<T>>(jsonObject);
             return wrapper.items;
+        }
+
+        private static string WrapArray (string jsonArray)
+        {
+            return "{ \"items\": " + jsonArray + "}";
         }
 
         public static string ToJson<T>(T[] array)

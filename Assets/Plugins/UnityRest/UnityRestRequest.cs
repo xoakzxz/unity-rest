@@ -80,7 +80,7 @@ namespace UnityRest
             executer.StartCoroutine (SendRoutine ());
         }
 
-        public IEnumerator SendRoutine ()
+        internal IEnumerator SendRoutine ()
         {
             string url = BuildURL ();
             UnityWebRequest internalRequest = BuildInternalRequest (url);
