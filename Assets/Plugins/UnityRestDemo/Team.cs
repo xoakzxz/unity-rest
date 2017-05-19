@@ -19,6 +19,6 @@ public class Team
 
 	public override string ToString ()
 	{
-		return string.Format ("{0} - {1}:{2}\n{3}", title, userId, id, body);
+		return string.Format ("{0}, 1}, {2}, {3}", title, userId, id, body);
 	}
 }

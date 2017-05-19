@@ -29,7 +29,7 @@ namespace UnityRest
 		private void Awake ()
 		{
 			if (Instance != null)
-				Destroy (this);
+				DestroyImmediate (this);
 			else
 				Instance = this;
 		}

@@ -12,7 +12,7 @@ namespace UnityRest
         private string baseUrl;
         private string endpoint;
         private ObjectId id;
-        private string body;
+        private Dictionary<string, string> body;
         private HttpVerb verb;
         private ResponseParser responseHandler;
         private Action onResult;
@@ -27,16 +27,32 @@ namespace UnityRest
             this.executer = executer;
         }
 
-        public UnityRestRequest WithBody (string body)
+        public UnityRestRequest WithBody(string body)
         {
-            this.body = body;
+            body = body.Trim('{', '}');
+
+            string[] bodySplit = body.Split(',');
+
+            Dictionary<string, string> values = new Dictionary<string, string>();
+
+            for (int i = 0; i < bodySplit.Length; i++)
+            {
+                string key = bodySplit[i].Split(':')[0];
+                string onevalue = bodySplit[i].Split(':')[1];
+                key = key.Replace('"', ' ');
+                key = key.Trim();
+                onevalue = onevalue.Replace('"', ' ');
+                onevalue = onevalue.Trim();
+                values.Add(key, onevalue);
+            }
+
+            this.body = values;
             return this;
         }
 
         public UnityRestRequest WithBody<T> (T body)
         {
             string json = JsonUtility.ToJson (body);
-            Debug.Log(json);
             return WithBody (json);
         }
 
@@ -84,10 +100,14 @@ namespace UnityRest
         internal IEnumerator SendRoutine ()
         {
             string url = BuildURL ();
+
             UnityWebRequest internalRequest = BuildInternalRequest (url);
+
             if (headers != null)
                 SetHeaders (internalRequest);
+
             yield return internalRequest.Send ();
+
             HandleResult (internalRequest);
         }
 
@@ -107,6 +127,7 @@ namespace UnityRest
         private string BuildURL ()
         {
             string url = string.Format ("{0}/{1}", baseUrl, endpoint);
+
             if (id != null)
                 url = string.Format ("{0}/{1}", url, id.value);
             return url;
