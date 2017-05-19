@@ -18,8 +18,11 @@ public class Test : MonoBehaviour
 			GetOne ();
         if (Input.GetKeyDown(KeyCode.P))
             Post();
+
         if (Input.GetKeyDown(KeyCode.Y))
             GetAllYolo();
+        if (Input.GetKeyDown(KeyCode.U))
+            PostYolo();
 	}
 
 	public void GetAll ()
@@ -37,10 +40,21 @@ public class Test : MonoBehaviour
 		api.Get<Team> ().OnResult<Team> (Log).WithId ("1").Send ();
 	}
 
+    public void GetOneYolo()
+    {
+        api.Get<Yolo>().OnResult<Yolo>(LogYolo).WithId("1").Send();
+    }
+
     private void Post()
     {
         Team post = new Team("1", "Hello", "world");
         api.Post<Team>().WithBody(post).OnResult(LogOk).Send();
+    }
+
+    private void PostYolo()
+    {
+        Yolo yolo = new Yolo("epa", "Bibiana");
+        api.Post<Yolo>().WithBody(yolo).OnResult(LogOk).Send();
     }
 
     private void Log(Team post)

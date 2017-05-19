@@ -36,6 +36,7 @@ namespace UnityRest
         public UnityRestRequest WithBody<T> (T body)
         {
             string json = JsonUtility.ToJson (body);
+            Debug.Log(json);
             return WithBody (json);
         }
 
