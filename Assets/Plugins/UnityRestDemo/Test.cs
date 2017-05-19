@@ -12,18 +12,30 @@ public class Test : MonoBehaviour
 
 	private void Update () 
 	{
-		if (Input.GetKeyDown (KeyCode.G))
-			GetAll ();
-		if (Input.GetKeyDown (KeyCode.O))
-			GetOne ();
+        //Team
+        if (Input.GetKeyDown(KeyCode.G))
+            GetAll();
+        if (Input.GetKeyDown(KeyCode.O))
+            GetOne();
         if (Input.GetKeyDown(KeyCode.P))
             Post();
 
+        //Yolo
         if (Input.GetKeyDown(KeyCode.Y))
             GetAllYolo();
         if (Input.GetKeyDown(KeyCode.U))
             PostYolo();
-	}
+
+        //Player
+        if (Input.GetKeyDown(KeyCode.Z))
+            PlayerPost();
+    }
+
+    public void PlayerPost()
+    {
+        Player player = new Player("3", "rompqks");
+        api.Post<Player>().WithBody(player).OnResult(LogOk).Send();
+    }
 
 	public void GetAll ()
 	{
@@ -47,8 +59,8 @@ public class Test : MonoBehaviour
 
     private void Post()
     {
-        Team post = new Team("1", "Hello", "world");
-        api.Post<Team>().WithBody(post).OnResult(LogOk).Send();
+        Team team = new Team("1", "Hello", "world");
+        api.Post<Team>().WithBody(team).OnResult(LogOk).Send();
     }
 
     private void PostYolo()
